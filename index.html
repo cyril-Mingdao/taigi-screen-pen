@@ -1,54 +1,552 @@
 <!doctype html>
 <!--
-  台語螢幕畫筆 介紹頁
-  著作權所有 (c) 2026 詹宗龍（臺中明道中學）。僅供教學使用。
+  【著作權聲明】
+  台語螢幕畫筆 介紹頁 v2 — Chrome 擴充功能「台語螢幕畫筆」的安裝與操作說明，並推廣「宗龍的台語課」
+  Copyright © 2026 詹宗龍（臺中明道中學）. All rights reserved.
+  本網頁之程式碼、版面與教案設計著作權屬詹宗龍所有，僅供非營利之教育教學使用。
+  未經著作權人書面授權，不得重製、改作、散布或修改本網頁之全部或一部分。
+  臺羅調符規則依教育部《臺灣台語羅馬字拼音方案》。
 -->
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="詹宗龍（臺中明道中學）">
-<meta name="copyright" content="(c) 2026 詹宗龍（臺中明道中學）">
-<meta name="description" content="台語螢幕畫筆：在任何網頁上畫重點，台語線上教學專用的 Chrome 擴充功能。">
-<title>台語螢幕畫筆</title>
+<meta name="copyright" content="© 2026 詹宗龍（臺中明道中學）。保留一切權利。">
+<meta name="description" content="台語螢幕畫筆：台語線上教學專用的 Chrome 擴充功能。Alt+Q 在任何網頁上畫重點，臺羅數字調自動轉調符、聲調章、PDF 講義授課。">
+<meta property="og:title" content="台語螢幕畫筆｜Chrome 擴充功能">
+<meta property="og:description" content="Alt+Q 在任何網頁上畫重點：臺羅自動調符、聲調章、雷射筆、聚光燈、PDF 講義。臺中明道中學 詹宗龍 製。">
+<meta property="og:image" content="screenshot-1.png">
+<title>台語螢幕畫筆｜Chrome 擴充功能</title>
 <link rel="icon" href="icon128.png">
 <style>
-  :root { --black: #111111; --yellow: #FFD400; --white: #FFFFFF; --light: #F5F5F5; }
+  :root {
+    --black: #111111; --yellow: #FFD400; --white: #FFFFFF;
+    --gray: #2A2A2A; --light: #F5F5F5; --mute: #9A9A9A; --line: #3A3A3A;
+    --ok: #1FA34A; --ng: #E0332E;
+    --radius: 14px;
+  }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--light); color: var(--black); line-height: 1.8;
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--light); color: var(--black); line-height: 1.75;
     font-family: "Microsoft JhengHei UI", "Microsoft JhengHei", "Noto Sans TC", "PingFang TC", sans-serif; }
-  header { background: var(--black); color: var(--white); padding: 36px 16px; text-align: center; }
-  header img { width: 80px; height: 80px; border-radius: 16px; }
-  header h1 { margin: 8px 0 0; color: var(--yellow); font-size: 34px; }
-  header p { margin: 4px 0 0; color: #DDDDDD; }
-  main { max-width: 860px; margin: 0 auto; padding: 24px 16px 40px; }
-  img.shot { width: 100%; border-radius: 12px; border: 2px solid var(--black); display: block; margin: 0 0 18px; }
-  .links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 8px 0 24px; }
-  .links a { background: var(--yellow); color: var(--black); border: 2px solid var(--black); border-radius: 10px; padding: 8px 18px; font-weight: bold; text-decoration: none; }
-  .course { background: var(--black); color: var(--white); border-radius: 12px; padding: 20px 22px; margin: 8px 0 24px; }
-  .course h2 { margin: 0 0 6px; color: var(--yellow); font-size: 24px; }
-  .course p { margin: 0 0 14px; }
-  .course a { display: inline-block; background: var(--yellow); color: var(--black); border-radius: 10px; padding: 8px 18px; font-weight: bold; text-decoration: none; }
-  footer { text-align: center; color: #666666; font-size: 14px; padding: 0 16px 32px; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  .tailo { font-family: "Segoe UI", "Noto Sans", "Arial Unicode MS", sans-serif; }
+
+  /* ---------- 頂部導覽 ---------- */
+  .nav { position: sticky; top: 0; z-index: 50; background: var(--black); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; align-items: center; gap: 18px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--white); font-weight: 700; white-space: nowrap; }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; }
+  .nav nav { display: flex; gap: 4px; margin-left: auto; }
+  .nav nav a { color: #DDDDDD; text-decoration: none; padding: 6px 10px; border-radius: 8px; font-size: 15px; }
+  .nav nav a:hover { color: var(--yellow); background: var(--gray); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--yellow); color: var(--black);
+    font-weight: 700; text-decoration: none; padding: 7px 14px; border-radius: 999px; white-space: nowrap; font-size: 15px; }
+  .pill:hover { filter: brightness(1.05); }
+
+  /* ---------- 主視覺 ---------- */
+  .hero { background: var(--black); color: var(--white); padding: 56px 0 72px; overflow: hidden; }
+  .hero .wrap { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+  .tag { display: inline-block; border: 1px solid var(--yellow); color: var(--yellow); border-radius: 999px;
+    padding: 2px 12px; font-size: 14px; letter-spacing: .05em; }
+  .hero h1 { font-size: clamp(36px, 5.4vw, 60px); line-height: 1.2; margin: 14px 0 12px; }
+  .hero h1 em { font-style: normal; color: var(--yellow); }
+  .hero .lead { color: #D6D6D6; font-size: 18px; margin: 0 0 26px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 12px;
+    font-weight: 700; font-size: 17px; text-decoration: none; border: 2px solid var(--yellow); }
+  .btn.primary { background: var(--yellow); color: var(--black); }
+  .btn.ghost { color: var(--yellow); }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 22px; height: 22px; flex: none; }
+  .meta { margin-top: 18px; color: var(--mute); font-size: 14px; }
+  .meta b { color: var(--white); font-weight: 600; }
+
+  /* 瀏覽器外框示意：工具列上的擴充圖示 */
+  .browser { background: #1D1D1D; border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 30px 80px rgba(0,0,0,.6); overflow: hidden; }
+  .bar { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #262626; }
+  .dots { display: flex; gap: 6px; }
+  .dots i { width: 11px; height: 11px; border-radius: 50%; background: #444; }
+  .url { flex: 1; background: #161616; color: #AAAAAA; border-radius: 999px; padding: 4px 14px; font-size: 13px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ext { position: relative; display: flex; align-items: center; gap: 6px; }
+  .ext .ico { width: 28px; height: 28px; border-radius: 7px; outline: 2px solid var(--yellow); outline-offset: 2px; animation: pulse 2.4s infinite; }
+  .ext .puzzle { width: 22px; height: 22px; color: #999; }
+  .tip { position: absolute; right: -4px; top: 42px; background: var(--yellow); color: var(--black); font-size: 13px; font-weight: 700;
+    padding: 4px 10px; border-radius: 8px; white-space: nowrap; z-index: 2; }
+  .tip::before { content: ""; position: absolute; right: 38px; top: -6px; border: 6px solid transparent; border-top: 0; border-bottom-color: var(--yellow); }
+  @keyframes pulse { 0%,100% { outline-color: var(--yellow); } 50% { outline-color: transparent; } }
+  .browser img { width: 100%; }
+
+  /* ---------- 區塊共用 ---------- */
+  section { padding: 76px 0; }
+  .eyebrow { color: #8A7200; font-weight: 700; letter-spacing: .08em; font-size: 14px; }
+  .dark .eyebrow { color: var(--yellow); }
+  h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.3; margin: 6px 0 12px; }
+  .sub { color: #555; max-width: 720px; margin: 0 0 36px; font-size: 17px; }
+  .dark { background: var(--black); color: var(--white); }
+  .dark .sub { color: #BDBDBD; }
+  kbd { display: inline-block; min-width: 1.9em; text-align: center; padding: 1px 7px; border-radius: 6px; font-family: inherit; font-weight: 700;
+    font-size: .92em; background: var(--white); color: var(--black); border: 1px solid #CCC; border-bottom-width: 3px; line-height: 1.5; }
+  .dark kbd { background: var(--gray); color: var(--yellow); border-color: #555; }
+
+  /* ---------- 三步開始 ---------- */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
+  .step { background: var(--white); border-radius: var(--radius); padding: 26px 24px 24px; border: 2px solid var(--black); position: relative; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -18px; left: 20px; width: 36px; height: 36px;
+    border-radius: 50%; background: var(--yellow); border: 2px solid var(--black); display: grid; place-items: center; font-weight: 800; }
+  .step h3 { margin: 6px 0 8px; font-size: 21px; }
+  .step p { margin: 0 0 8px; color: #333; }
+  .step .small { font-size: 14px; color: #666; }
+  .ops { margin-top: 26px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .op { background: var(--black); color: var(--white); border-radius: 12px; padding: 14px 16px; }
+  .op .k { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
+  .op kbd { background: var(--gray); color: var(--yellow); border-color: #555; }
+  .op span { color: #CFCFCF; font-size: 15px; }
+
+  /* ---------- 互動試打 ---------- */
+  .try { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+  .pad { background: var(--white); color: var(--black); border-radius: var(--radius); padding: 22px; border: 3px solid var(--yellow);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 39px, #E3E3E3 39px 40px); }
+  .pad label { font-weight: 700; font-size: 14px; color: #555; }
+  .pad input { width: 100%; font-size: 22px; padding: 10px 14px; border: 2px solid var(--black); border-radius: 10px; margin: 6px 0 14px; font-family: Consolas, monospace; }
+  .pad input:focus { outline: 3px solid var(--yellow); }
+  .out { font-size: clamp(34px, 5vw, 52px); color: var(--ng); min-height: 1.4em; line-height: 1.3; word-break: break-word; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chips button { font: inherit; font-size: 14px; border: 1px solid var(--black); background: var(--light); border-radius: 999px; padding: 3px 12px; cursor: pointer; font-family: Consolas, monospace; }
+  .chips button:hover { background: var(--yellow); }
+  .tones { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .tones div { background: var(--gray); border-radius: 10px; padding: 8px 10px; text-align: center; }
+  .tones b { display: block; color: var(--yellow); font-size: 13px; }
+  .tones span { font-size: 22px; }
+
+  /* ---------- 功能 ---------- */
+  .feat { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: center; margin-bottom: 64px; }
+  .feat:last-child { margin-bottom: 0; }
+  .feat.rev { grid-template-columns: 1fr 1.25fr; }
+  .feat.rev .shot { order: 2; }
+  .shot { border-radius: var(--radius); border: 2px solid var(--black); overflow: hidden; box-shadow: 0 14px 34px rgba(0,0,0,.14); background: var(--black); }
+  .feat h3 { font-size: 26px; margin: 0 0 10px; line-height: 1.35; }
+  .feat ul { margin: 0; padding: 0; list-style: none; }
+  .feat li { padding: 7px 0 7px 30px; position: relative; border-bottom: 1px dashed #D8D8D8; }
+  .feat li::before { content: ""; position: absolute; left: 4px; top: 15px; width: 14px; height: 14px; border-radius: 4px; background: var(--yellow); border: 2px solid var(--black); }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { background: var(--white); border-radius: var(--radius); padding: 22px; border: 1px solid #E2E2E2; }
+  .card h4 { margin: 0 0 6px; font-size: 19px; display: flex; align-items: center; gap: 10px; }
+  .card h4 .badge { background: var(--black); color: var(--yellow); font-size: 12px; padding: 1px 8px; border-radius: 6px; }
+  .card p { margin: 0; color: #444; font-size: 15.5px; }
+
+  /* ---------- 左手鍵盤 ---------- */
+  .kb { display: grid; gap: 8px; }
+  .row { display: grid; gap: 8px; }
+  .r0 { grid-template-columns: repeat(6, 1fr); }
+  .r1 { grid-template-columns: repeat(5, 1fr) 1fr; }
+  .r2 { grid-template-columns: 1.4fr repeat(5, 1fr); }
+  .r3 { grid-template-columns: 1.7fr repeat(5, 1fr); }
+  .r4 { grid-template-columns: 2.1fr repeat(5, 1fr); }
+  .key { background: var(--gray); border: 1px solid #444; border-bottom-width: 4px; border-radius: 9px; padding: 6px 8px; min-height: 64px; }
+  .key b { display: block; color: var(--yellow); font-size: 14px; }
+  .key span { display: block; font-size: 15px; font-weight: 700; color: var(--white); line-height: 1.3; }
+  .key small { display: block; color: var(--mute); font-size: 12px; line-height: 1.3; }
+  .key.off { opacity: .35; }
+  .key.c1 { box-shadow: inset 0 -4px 0 #E0332E; } .key.c2 { box-shadow: inset 0 -4px 0 #FFD400; }
+  .key.c3 { box-shadow: inset 0 -4px 0 #1FA34A; } .key.c4 { box-shadow: inset 0 -4px 0 #2D6BE6; } .key.c5 { box-shadow: inset 0 -4px 0 #DDDDDD; }
+  .kb-note { color: #BDBDBD; font-size: 14px; margin-top: 14px; }
+  .combo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
+  .combo div { background: var(--gray); border-radius: 12px; padding: 14px 16px; font-size: 15px; color: #DDD; }
+  .combo h4 { margin: 0 0 6px; color: var(--yellow); font-size: 16px; }
+  .combo p { margin: 3px 0; }
+
+  /* ---------- 宗龍的台語課 ---------- */
+  .course { background: var(--yellow); padding: 0; }
+  .course .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; padding-top: 64px; padding-bottom: 64px; }
+  .course h2 { font-size: clamp(32px, 4.6vw, 52px); margin: 6px 0 12px; }
+  .course .eyebrow { color: var(--black); }
+  .course p { font-size: 18px; margin: 0 0 22px; }
+  .course .btn.primary { background: var(--black); color: var(--yellow); border-color: var(--black); font-size: 19px; padding: 15px 26px; }
+  .course .url2 { margin-top: 12px; font-size: 14px; word-break: break-all; }
+  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .menu a { background: var(--black); color: var(--white); text-decoration: none; border-radius: 14px; padding: 16px 18px; display: block; transition: transform .15s; }
+  .menu a:hover { transform: translateY(-2px); }
+  .menu b { display: block; color: var(--yellow); font-size: 19px; }
+  .menu span { font-size: 14px; color: #CFCFCF; }
+  .menu .wide { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .menu .wide span { color: var(--white); }
+
+  /* ---------- 隱私與 FAQ ---------- */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: var(--radius); overflow: hidden; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #EEE; vertical-align: top; font-size: 15.5px; }
+  th { background: var(--black); color: var(--yellow); }
+  td code { background: var(--light); padding: 1px 6px; border-radius: 5px; font-size: 14px; }
+  .assure { margin-top: 14px; background: var(--black); color: var(--white); border-radius: var(--radius); padding: 16px 18px; }
+  .assure b { color: var(--yellow); }
+  details { background: var(--white); border-radius: 12px; border: 1px solid #E2E2E2; margin-bottom: 10px; }
+  summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; position: relative; padding-right: 44px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; position: absolute; right: 18px; top: 10px; font-size: 22px; color: #8A7200; }
+  details[open] summary::after { content: "−"; }
+  details p { margin: 0; padding: 0 18px 16px; color: #444; }
+
+  /* ---------- 頁尾 ---------- */
+  footer { background: var(--black); color: #BDBDBD; padding: 36px 0 42px; font-size: 14.5px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; }
+  footer a { color: var(--yellow); }
+  footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+  /* ---------- 手機 ---------- */
+  @media (max-width: 900px) {
+    .nav nav { display: none; }
+    .nav .pill { margin-left: auto; }
+    .hero .wrap, .try, .feat, .feat.rev, .course .wrap, .two { grid-template-columns: 1fr; gap: 28px; }
+    .feat.rev .shot { order: 0; }
+    .steps, .grid3, .combo { grid-template-columns: 1fr; gap: 24px; }
+    .ops { grid-template-columns: 1fr 1fr; }
+    .kb-scroll { overflow-x: auto; padding-bottom: 6px; }
+    .kb { min-width: 640px; }
+    section { padding: 56px 0; }
+    .hero { padding: 36px 0 52px; }
+  }
+  @media (max-width: 480px) {
+    .brand span { display: none; }
+    .menu { grid-template-columns: 1fr; }
+    .tones { grid-template-columns: repeat(4, 1fr); }
+    .btn { width: 100%; justify-content: center; }
+    .tip { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ext .ico { animation: none; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
-<header>
-  <img src="icon128.png" alt="">
-  <h1>台語螢幕畫筆</h1>
-  <p>在任何網頁上畫重點・臺羅自動調符・聲調章・白板，台語線上教學專用</p>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="icon128.png" alt=""><span>台語螢幕畫筆</span></a>
+    <nav aria-label="頁內導覽">
+      <a href="#start">安裝與開始</a>
+      <a href="#try">試打臺羅</a>
+      <a href="#features">功能</a>
+      <a href="#keys">左手快捷鍵</a>
+      <a href="#faq">常見問題</a>
+    </nav>
+    <a class="pill" href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener">宗龍的台語課 ↗</a>
+  </div>
 </header>
-<main>
-  <div class="links"><a href="#course">宗龍的台語課</a><a href="privacy.html">隱私權政策</a></div>
-  <img class="shot" src="screenshot-1.png" alt="在網頁上畫重點">
-  <img class="shot" src="screenshot-2.png" alt="臺羅數字調自動轉調符">
-  <img class="shot" src="screenshot-3.png" alt="聲調章：本調→變調">
+
+<main id="top">
+  <!-- 主視覺 -->
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="tag">Chrome 擴充功能・台語線上教學專用</span>
+        <h1>按 <em>Alt+Q</em>，<br>在任何網頁上<br>畫台語重點</h1>
+        <p class="lead">Google 簡報、雲端硬碟、YouTube、電子課本都能畫。打 <span class="tailo">tai5-gi2</span> 自動變成 <span class="tailo" style="color:var(--yellow)">tâi-gí</span>，一點蓋上變調章；再按一次 Alt+Q，網頁完全回到原狀。</p>
+        <div class="cta">
+          <a class="btn primary" href="https://chromewebstore.google.com/detail/%E5%8F%B0%E8%AA%9E%E8%9E%A2%E5%B9%95%E7%95%AB%E7%AD%86/eidmlamodkcbmbdeipdbkbanaeemighp" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5h8.4M8.97 13.75 4.8 6.5M15.03 13.75 10.8 21"/></svg>
+            免費加到 Chrome
+          </a>
+          <a class="btn ghost" href="#start">看怎麼用</a>
+        </div>
+        <p class="meta">版本 <b>1.2.0</b>・權限只有 <b>activeTab／scripting／storage</b>・不收集任何資料</p>
+      </div>
+
+      <div class="browser" aria-label="示意：Chrome 工具列上的台語螢幕畫筆圖示">
+        <div class="bar">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="url">docs.google.com/presentation/…　第三課 食飯</div>
+          <div class="ext">
+            <svg class="puzzle" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v3.8h1.5a2.7 2.7 0 0 1 0 5.4H2V20a2 2 0 0 0 2 2h3.8v-1.5a2.7 2.7 0 0 1 5.4 0V22H17a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"/></svg>
+            <img class="ico" src="icon128.png" alt="台語螢幕畫筆圖示">
+            <span class="tip">點這裡，或按 Alt+Q</span>
+          </div>
+        </div>
+        <img src="screenshot-1.png" alt="在課文網頁上用紅筆圈詞、螢光筆畫線、打勾，右側是台語畫筆工具列" width="1280" height="800">
+      </div>
+    </div>
+  </section>
+
+  <!-- 安裝與開始 -->
+  <section id="start">
+    <div class="wrap">
+      <div class="eyebrow">STEP BY STEP</div>
+      <h2>三步驟開始上課</h2>
+      <p class="sub">畫筆不會常駐在網頁裡：只有您按下 Alt+Q 或點圖示的那個分頁才會載入，平常瀏覽完全不受影響。</p>
+      <div class="steps">
+        <div class="step">
+          <h3>加到 Chrome</h3>
+          <p>到 <a href="https://chromewebstore.google.com/detail/%E5%8F%B0%E8%AA%9E%E8%9E%A2%E5%B9%95%E7%95%AB%E7%AD%86/eidmlamodkcbmbdeipdbkbanaeemighp" target="_blank" rel="noopener">Chrome 線上應用程式商店的「台語螢幕畫筆」頁面</a>，按「<b>加到 Chrome</b>」→「<b>新增擴充功能</b>」。</p>
+          <p class="small">安裝時不會出現「讀取及變更您在所有網站上的資料」的警告。Edge 也可從 Chrome 商店安裝。</p>
+        </div>
+        <div class="step">
+          <h3>釘選到工具列</h3>
+          <p>點網址列右邊的<b>拼圖圖示</b>，在「台語螢幕畫筆」旁按<b>圖釘</b>，黑黃圖示就會固定在工具列上。</p>
+          <p class="small">想換快捷鍵：網址列輸入 <code>chrome://extensions/shortcuts</code>。</p>
+        </div>
+        <div class="step">
+          <h3>開始畫</h3>
+          <p>打開要上課的網頁，按 <kbd>Alt</kbd>+<kbd>Q</kbd> 或點黑黃圖示，畫面右側出現「台語畫筆」工具列，就能直接畫。</p>
+          <p class="small">畫筆中按 <kbd>F1</kbd> 會顯示整張鍵盤說明圖。</p>
+        </div>
+      </div>
+      <div class="ops">
+        <div class="op"><div class="k"><kbd>Alt</kbd><kbd>Q</kbd></div><span>開始／結束畫筆；滑鼠穿透時＝回到畫筆</span></div>
+        <div class="op"><div class="k"><kbd>Alt</kbd><kbd>B</kbd></div><span>直接開白板</span></div>
+        <div class="op"><div class="k"><kbd>Q</kbd></div><span>滑鼠穿透：標記留著，照樣點網頁、翻投影片</span></div>
+        <div class="op"><div class="k"><kbd>Esc</kbd></div><span>結束（有選取標記時先取消選取）</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 試打臺羅 -->
+  <section id="try" class="dark">
+    <div class="wrap try">
+      <div>
+        <div class="eyebrow">TRY IT</div>
+        <h2>臺羅數字調，打完自動變調符</h2>
+        <p class="sub">畫筆的文字工具（<kbd>T</kbd>）勾選「臺羅自動調符」後，輸入數字調就轉成教育部《臺灣台語羅馬字拼音方案》的調符。在右邊試試看，和擴充功能裡的效果一樣。</p>
+        <div class="tones tailo" aria-label="臺羅八聲調符">
+          <div><b>1 聲</b><span>a</span></div><div><b>2 聲</b><span>á</span></div><div><b>3 聲</b><span>à</span></div><div><b>4 聲</b><span>ah</span></div>
+          <div><b>5 聲</b><span>â</span></div><div><b>7 聲</b><span>ā</span></div><div><b>8 聲</b><span>a̍h</span></div><div><b>9 聲</b><span>a̋</span></div>
+        </div>
+      </div>
+      <div class="pad">
+        <label for="tlInput">輸入數字調臺羅</label>
+        <input id="tlInput" value="tai5-gi2" autocomplete="off" autocapitalize="off" spellcheck="false" inputmode="latin">
+        <div class="out tailo" id="tlOut" aria-live="polite">tâi-gí</div>
+        <div class="chips" aria-label="範例">
+          <button type="button">tsiah8-png7</button>
+          <button type="button">kiu2 sui2 ng5</button>
+          <button type="button">lau7-su1</button>
+          <button type="button">ho2-tsiah8</button>
+          <button type="button">peh8-pang5</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 功能 -->
+  <section id="features">
+    <div class="wrap">
+      <div class="eyebrow">FEATURES</div>
+      <h2>為台語課設計的每一支筆</h2>
+      <p class="sub">桌面版「台語螢幕畫筆」的功能，Chrome 擴充 v1.2 幾乎全部到齊。</p>
+
+      <div class="feat">
+        <div class="shot"><img src="screenshot-3.png" alt="聲調章：在字上蓋出本調到變調的標記" width="1280" height="800" loading="lazy"></div>
+        <div>
+          <h3>聲調章・編號章<br>講變調一目了然</h3>
+          <ul>
+            <li><kbd>V</kbd> 聲調章：在字上一點蓋出「2→1」本調→變調，按數字選本調、Shift+數字選變調</li>
+            <li><kbd>Shift</kbd>+<kbd>V</kbd> 編號章：依序蓋 ①②③，標出朗讀順序</li>
+            <li>工具列一鍵<b>貼上臺羅拼音表</b>：聲母、韻母、聲調、變調總表，調符紅色</li>
+            <li><kbd>B</kbd> 白板、<kbd>Shift</kbd>+<kbd>B</kbd> 四線三格，還有黑板、方格紙背景</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feat rev">
+        <div class="shot"><img src="screenshot-5.png" alt="聚光燈把課文其他部分變暗，只留圓形亮區" width="1280" height="800" loading="lazy"></div>
+        <div>
+          <h3>聚光燈・雷射筆・放大鏡<br>線上教學讓學生看準位置</h3>
+          <ul>
+            <li><kbd>F2</kbd> 聚光燈、<kbd>F3</kbd> 放大鏡，滾輪調大小與倍率</li>
+            <li><kbd>A</kbd> 雷射筆：軌跡自動消失，不留痕跡</li>
+            <li><kbd>F5</kbd> 遮幕：滑鼠以下遮住，往下移逐行揭示答案（畫筆開著時 F5 不會重新整理網頁）</li>
+            <li>網頁全螢幕（Google 簡報「簡報模式」）時也能畫</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card"><h4>PDF 講義授課 <span class="badge">v1.2</span></h4><p>在內建「PDF 講義」頁開 PDF（<kbd>Ctrl</kbd>+<kbd>O</kbd> 或拖進來），空白鍵翻頁、每頁各自畫記；<kbd>Ctrl</kbd>+<kbd>S</kbd> 存回 PDF，之後還能再修改。</p></div>
+        <div class="card"><h4>頁面編輯與遮蓋</h4><p>插入空白頁、四線三格頁或其他 PDF，旋轉、移動、刪除頁面；白色遮蓋方塊挖空答案。</p></div>
+        <div class="card"><h4>貼上圖片 <span class="badge">v1.2</span></h4><p><kbd>Ctrl</kbd>+<kbd>V</kbd> 貼截圖、把圖檔拖進畫面，或按「貼圖」選多張；拖四角縮放、Delete 刪除。</p></div>
+        <div class="card"><h4>移動、縮放標記</h4><p>按住 <kbd>Ctrl</kbd> 拖曳任何標記；拖選取框四角縮放，文字與章等比例放大。移動、刪除都能復原。</p></div>
+        <div class="card"><h4>存檔・複製・列印</h4><p><kbd>Ctrl</kbd>+<kbd>S</kbd> 下載 PNG、<kbd>Ctrl</kbd>+<kbd>C</kbd> 複製、<kbd>Ctrl</kbd>+<kbd>P</kbd> 列印；可凍結畫面再畫。</p></div>
+        <div class="card"><h4>一鍵到「宗龍的台語課」</h4><p>工具列上的「宗龍的台語課」按鈕，在新分頁開啟課程網站，點讀筆、練習與測驗隨手可開。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 左手快捷鍵 -->
+  <section id="keys" class="dark">
+    <div class="wrap">
+      <div class="eyebrow">LEFT-HAND KEYS</div>
+      <h2>右手畫，左手換工具</h2>
+      <p class="sub">所有快捷鍵都在鍵盤左半邊。白字＝直接按，灰字＝按住 Shift 再按。</p>
+      <div class="kb-scroll">
+        <div class="kb" role="img" aria-label="左手快捷鍵鍵盤圖">
+          <div class="row r0">
+            <div class="key"><b>Esc</b><span>結束</span></div>
+            <div class="key"><b>F1</b><span>說明</span></div>
+            <div class="key"><b>F2</b><span>聚光燈</span></div>
+            <div class="key"><b>F3</b><span>放大鏡</span></div>
+            <div class="key"><b>F4</b><span>框選放大</span><small>⇧回 100%</small></div>
+            <div class="key"><b>F5</b><span>遮幕</span></div>
+          </div>
+          <div class="row r1">
+            <div class="key c1"><b>1</b><span>紅</span><small>⇧螢光紅</small></div>
+            <div class="key c2"><b>2</b><span>黃</span><small>⇧螢光黃</small></div>
+            <div class="key c3"><b>3</b><span>綠</span><small>⇧螢光綠</small></div>
+            <div class="key c4"><b>4</b><span>藍</span><small>⇧螢光藍</small></div>
+            <div class="key c5"><b>5</b><span>黑</span><small>⇧螢光白</small></div>
+            <div class="key off"><b>6</b></div>
+          </div>
+          <div class="row r2">
+            <div class="key"><b>Tab</b><span>收合工具列</span></div>
+            <div class="key"><b>Q</b><span>滑鼠穿透</span></div>
+            <div class="key"><b>W</b><span>橢圓</span><small>⇧實心</small></div>
+            <div class="key"><b>E</b><span>橡皮擦</span><small>⇧全部清除</small></div>
+            <div class="key"><b>R</b><span>矩形</span><small>⇧實心</small></div>
+            <div class="key"><b>T</b><span>文字</span><small>臺羅自動調符</small></div>
+          </div>
+          <div class="row r3">
+            <div class="key off"><b>Caps</b></div>
+            <div class="key"><b>A</b><span>雷射筆</span></div>
+            <div class="key"><b>S</b><span>螢光筆</span></div>
+            <div class="key"><b>D</b><span>箭頭</span><small>⇧雙向</small></div>
+            <div class="key"><b>F</b><span>畫筆</span></div>
+            <div class="key"><b>G</b><span>直線</span></div>
+          </div>
+          <div class="row r4">
+            <div class="key"><b>Shift</b><span>按住＝灰字功能</span></div>
+            <div class="key"><b>Z</b><span>復原</span><small>⇧重做</small></div>
+            <div class="key"><b>X</b><span>打叉</span></div>
+            <div class="key"><b>C</b><span>打勾</span></div>
+            <div class="key"><b>V</b><span>聲調章</span><small>⇧編號章</small></div>
+            <div class="key"><b>B</b><span>白板</span><small>⇧四線三格</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="combo">
+        <div><h4>組合鍵</h4><p><kbd>Alt</kbd>+<kbd>1</kbd>～<kbd>4</kbd>　粗細</p><p><kbd>Ctrl</kbd>+<kbd>Z</kbd>　復原（加 Shift 重做）</p><p><kbd>Ctrl</kbd>+拖曳　移動標記</p></div>
+        <div><h4>滑鼠</h4><p>滾輪　放大縮小／調放大鏡倍率</p><p>右鍵拖曳　移動放大後的畫面</p><p>按住 <kbd>空白鍵</kbd> 拖曳　抓手</p></div>
+        <div><h4>注音輸入法</h4><p>打臺羅前先按 <kbd>Shift</kbd> 切英數；擴充版會等輸入法組字完成才轉調符。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 宗龍的台語課 -->
   <section class="course" id="course">
-    <h2>宗龍的台語課</h2>
-    <p>臺中明道中學詹宗龍老師的台語教學網站。依課本課次整理朗讀點讀筆、形音義、咱來餾生份字、選詞塌空、咱來鬥句等線上練習與測驗，課堂上搭配台語螢幕畫筆畫重點、標聲調，學生在家也能自己練習。</p>
-    <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener">前往「宗龍的台語課」</a>
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">畫筆的好搭檔</div>
+        <h2>宗龍的台語課</h2>
+        <p>臺中明道中學詹宗龍老師的台語教學網站。依課本課次整理線上練習與測驗：課堂上用台語螢幕畫筆畫重點、標聲調，學生回家也能自己聽、自己練。</p>
+        <a class="btn primary" href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener">前往「宗龍的台語課」 →</a>
+        <div class="url2">sites.google.com/ms.mingdao.edu.tw/tsiam</div>
+      </div>
+      <div class="menu">
+        <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener"><b>朗讀點讀筆</b><span>逐句聽課文、看臺羅，跟讀錄音</span></a>
+        <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener"><b>形音義</b><span>聲母、韻母、聲調配對</span></a>
+        <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener"><b>咱來餾生份字</b><span>課文生詞複習</span></a>
+        <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener"><b>選詞塌空</b><span>選對的詞填進句子</span></a>
+        <a class="wide" href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener"><div><b>咱來鬥句</b><span>把詞語排成一句正確的台語</span></div><b aria-hidden="true">↗</b></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 隱私與 FAQ -->
+  <section id="faq">
+    <div class="wrap two">
+      <div>
+        <div class="eyebrow">PRIVACY</div>
+        <h2>權限只用在您按下的那一頁</h2>
+        <table>
+          <thead><tr><th>權限</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td><code>activeTab</code></td><td>只在您按 Alt+Q 或點圖示的分頁，暫時疊上畫布；凍結、存檔時擷取該分頁畫面</td></tr>
+            <tr><td><code>scripting</code></td><td>在該分頁載入套件內附的畫筆程式，不載入任何遠端程式碼</td></tr>
+            <tr><td><code>storage</code></td><td>在本機記住顏色、粗細、工具列位置</td></tr>
+          </tbody>
+        </table>
+        <div class="assure"><b>不收集、不傳送任何資料。</b>PDF 與貼上的圖片都只在您的電腦上處理。<a href="privacy.html" style="color:var(--yellow)">閱讀隱私權政策</a></div>
+      </div>
+      <div>
+        <div class="eyebrow">FAQ</div>
+        <h2>常見問題</h2>
+        <details>
+          <summary>在新分頁或 chrome:// 設定頁按 Alt+Q 沒反應？</summary>
+          <p>Chrome 不允許任何擴充功能在新分頁、設定頁、線上應用程式商店與內建 PDF 檢視器上作畫。在這些頁面啟動時，會改開擴充功能內建的「台語白板」頁（新分頁直接變成白板）。</p>
+        </details>
+        <details>
+          <summary>要怎麼在 PDF 講義上畫？</summary>
+          <p>按 Ctrl+O 或從背景選單選「PDF 講義」，在內建的 PDF 講義頁開啟檔案；在 Chrome 內建 PDF 檢視器按 Alt+Q 也會自動轉過去。畫好按 Ctrl+S 存回 PDF，任何閱讀器都看得到。</p>
+        </details>
+        <details>
+          <summary>畫的時候想點網頁、翻投影片？</summary>
+          <p>按 Q 切到「滑鼠穿透」：標記留在畫面上，滑鼠和鍵盤交給網頁；要再畫時按 Alt+Q 回到畫筆。</p>
+        </details>
+        <details>
+          <summary>打臺羅沒有變成調符？</summary>
+          <p>確認工具列「臺羅自動調符」有勾選，並在文字工具（T）中輸入；用注音輸入法時先按 Shift 切英數再打。</p>
+        </details>
+        <details>
+          <summary>想畫在 PowerPoint、Word 等整個 Windows 桌面？</summary>
+          <p>擴充功能只能畫在 Chrome 分頁內。要畫在整個桌面，請改用桌面版「台語螢幕畫筆」，功能與快捷鍵相同。</p>
+        </details>
+        <details>
+          <summary>存檔會存到哪裡？</summary>
+          <p>一般網頁按 Ctrl+S 會下載 PNG 到「下載」資料夾；PDF 講義頁則存回 PDF（第一次會請您允許覆寫原檔或選位置）。</p>
+        </details>
+      </div>
+    </div>
   </section>
 </main>
-<footer>著作權所有 © 2026 詹宗龍（臺中明道中學）</footer>
+
+<footer>
+  <div class="wrap">
+    <div>著作權所有 © 2026 詹宗龍（臺中明道中學）・台語螢幕畫筆 Chrome 擴充 v1.2</div>
+    <div class="links">
+      <a href="https://sites.google.com/ms.mingdao.edu.tw/tsiam" target="_blank" rel="noopener">宗龍的台語課</a>
+      <a href="privacy.html">隱私權政策</a>
+      <a href="#top">回到頂端 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 臺羅數字調 → 調符（教育部臺灣台語羅馬字拼音方案） */
+(function () {
+  var MARK = { 2: "́", 3: "̀", 5: "̂", 7: "̄", 8: "̍", 9: "̋" };
+  function pos(s) {
+    var l = s.toLowerCase(), i;
+    if ((i = l.indexOf("a")) >= 0) return i;
+    if ((i = l.indexOf("oo")) >= 0) return i;
+    if ((i = l.indexOf("e")) >= 0) return i;
+    if ((i = l.indexOf("o")) >= 0) return i;
+    var iu = l.indexOf("iu"), ui = l.indexOf("ui");
+    if (iu >= 0) return iu + 1;
+    if (ui >= 0) return ui + 1;
+    if ((i = l.indexOf("i")) >= 0) return i;
+    if ((i = l.indexOf("u")) >= 0) return i;
+    if ((i = l.indexOf("ng")) >= 0) return i;
+    if ((i = l.indexOf("m")) >= 0) return i;
+    if ((i = l.indexOf("n")) >= 0) return i;
+    return -1;
+  }
+  function syl(body, tone) {
+    var m = MARK[tone];
+    if (!m) return body;
+    var p = pos(body);
+    if (p < 0) return body + tone;
+    return (body.slice(0, p + 1) + m + body.slice(p + 1)).normalize("NFC");
+  }
+  function convert(text) {
+    return text.replace(/([A-Za-z]+)([1-9])/g, function (_, b, t) { return syl(b, +t); });
+  }
+  var input = document.getElementById("tlInput"), out = document.getElementById("tlOut");
+  function run() { out.textContent = convert(input.value) || " "; }
+  input.addEventListener("input", run);
+  document.querySelectorAll(".chips button").forEach(function (b) {
+    b.addEventListener("click", function () { input.value = b.textContent; run(); input.focus(); });
+  });
+  run();
+})();
+</script>
 </body>
 </html>
