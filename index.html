@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
   【著作權聲明】
-  台語螢幕畫筆 介紹頁 v3 — Chrome 擴充功能「台語螢幕畫筆」的安裝與操作說明，並推廣「宗龍的台語課」
+  台語螢幕畫筆 介紹頁 v4 — Chrome 擴充功能「台語螢幕畫筆」的安裝與操作說明，並推廣「宗龍的台語課」
   Copyright © 2026 詹宗龍（臺中明道中學）. All rights reserved.
   本網頁之程式碼、版面與教案設計著作權屬詹宗龍所有，僅供非營利之教育教學使用。
   未經著作權人書面授權，不得重製、改作、散布或修改本網頁之全部或一部分。
@@ -93,6 +93,19 @@
     font-size: .92em; background: var(--white); color: var(--black); border: 1px solid #CCC; border-bottom-width: 3px; line-height: 1.5; }
   .dark kbd { background: var(--gray); color: var(--yellow); border-color: #555; }
 
+  /* ---------- 影片介紹 ---------- */
+  .videos { background: var(--gray); color: var(--white); }
+  .videos .sub { color: #BDBDBD; }
+  .videos .eyebrow { color: var(--yellow); }
+  .vgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .vcard { background: var(--black); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
+  .vframe { position: relative; aspect-ratio: 16 / 9; background: #000; }
+  .vframe iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .vcap { display: flex; align-items: center; gap: 10px; padding: 14px 18px; }
+  .vcap .lang { background: var(--yellow); color: var(--black); font-weight: 800; font-size: 14px; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+  .vcap b { font-size: 17px; }
+  .vcap a { margin-left: auto; color: var(--yellow); font-size: 14px; white-space: nowrap; }
+
   /* ---------- 三步開始 ---------- */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; counter-reset: s; }
   .step { background: var(--white); border-radius: var(--radius); padding: 26px 24px 24px; border: 2px solid var(--black); position: relative; }
@@ -101,6 +114,7 @@
   .step h3 { margin: 6px 0 8px; font-size: 21px; }
   .step p { margin: 0 0 8px; color: #333; }
   .step .small { font-size: 14px; color: #666; }
+  .step code { word-break: break-all; }
   .ops { margin-top: 26px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .op { background: var(--black); color: var(--white); border-radius: 12px; padding: 14px 16px; }
   .op .k { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px; }
@@ -203,7 +217,7 @@
     .nav .pill { margin-left: auto; }
     .hero .wrap, .try, .feat, .feat.rev, .course .wrap, .two { grid-template-columns: 1fr; gap: 28px; }
     .feat.rev .shot { order: 0; }
-    .steps, .grid3, .combo { grid-template-columns: 1fr; gap: 24px; }
+    .steps, .grid3, .combo, .vgrid { grid-template-columns: 1fr; gap: 24px; }
     .ops { grid-template-columns: 1fr 1fr; }
     .kb-scroll { overflow-x: auto; padding-bottom: 6px; }
     .kb { min-width: 640px; }
@@ -226,6 +240,7 @@
   <div class="wrap">
     <a class="brand" href="#top"><img src="icon128.png" alt=""><span>台語螢幕畫筆</span></a>
     <nav aria-label="頁內導覽">
+      <a href="#video">影片介紹</a>
       <a href="#start">安裝與開始</a>
       <a href="#try">試打臺羅</a>
       <a href="#features">功能</a>
@@ -249,7 +264,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="M12 8.5h8.4M8.97 13.75 4.8 6.5M15.03 13.75 10.8 21"/></svg>
             免費加到 Chrome
           </a>
-          <a class="btn ghost" href="#start">看怎麼用</a>
+          <a class="btn ghost" href="#video">看介紹影片</a>
         </div>
         <p class="meta">版本 <b>1.2.0</b>・權限只有 <b>activeTab／scripting／storage</b>・不收集任何資料</p>
       </div>
@@ -265,6 +280,33 @@
           </div>
         </div>
         <img src="screenshot-1.png" alt="在課文網頁上用紅筆圈詞、螢光筆畫線、打勾，右側是台語畫筆工具列" width="1280" height="800">
+      </div>
+    </div>
+  </section>
+
+  <!-- 影片介紹 -->
+  <section id="video" class="videos">
+    <div class="wrap">
+      <div class="eyebrow">VIDEO</div>
+      <h2>先看影片，馬上上手</h2>
+      <p class="sub">詹宗龍老師製作的擴充功能介紹影片，有台語版與華語版，擇一觀看。</p>
+      <div class="vgrid">
+        <div class="vcard">
+          <div class="vframe">
+            <iframe src="https://www.youtube-nocookie.com/embed/V_aucd3IJJY?rel=0" title="台語螢幕畫筆紹介(台語版)" loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="vcap"><span class="lang">台語版</span><b>台語螢幕畫筆紹介</b><a href="https://www.youtube.com/watch?v=V_aucd3IJJY" target="_blank" rel="noopener">YouTube ↗</a></div>
+        </div>
+        <div class="vcard">
+          <div class="vframe">
+            <iframe src="https://www.youtube-nocookie.com/embed/4VSGAqSN8oM?rel=0" title="台語螢幕畫筆介紹(華語版)" loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="vcap"><span class="lang">華語版</span><b>台語螢幕畫筆介紹</b><a href="https://www.youtube.com/watch?v=4VSGAqSN8oM" target="_blank" rel="noopener">YouTube ↗</a></div>
+        </div>
       </div>
     </div>
   </section>
